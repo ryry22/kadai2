@@ -1,0 +1,53 @@
+<html>
+  <head>
+    <title>WebCampBackendNew</title>
+    <%= stylesheet_link_tag 'application' %>
+  </head>
+
+  <body>
+     <% if flash[:notice] %>
+          <p class="green"><%= flash[:notice] %></p>
+     <% end %>
+    <h1>
+      Books
+    </h1>
+    <table>
+      <thead>
+        <tr>
+          <th class="table">Title</th>
+          <th class="table">Body</th>
+        </tr>
+      </thead>
+      <% @books.each do |book| %>
+        <tr>
+          <td class="value"><%= book.title %></td>
+          <td class="value"><%= book.body %></td>
+          <td>
+            <%= link_to "Show", "/books/#{book.id}"%>
+          </td>
+          <td><%= link_to "Edit", "/books/#{book.id}/edit"%></td>
+          <td><%= link_to "Destroy", destroy_book_path(book.id), method: :delete, "data-confirm" => "本当に削除しますか？"%></td>
+        </tr>
+      <% end %>
+    </table>
+
+    <h2>New book</h2>
+      <% if @book.errors.any? %>
+      <%= @book.errors.count %> errors prohibited this book from being saved:
+      <ul>
+        <% @book.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+      <% end %>
+      <%= form_with model: @book, url: '/books', method: :post do |f| %>
+        <p>Title</p>
+        <%= f.text_field:title %>
+
+        <p>Body</p>
+        <%= f.text_area:body %>
+
+        <br><%= f.submit 'Create Book' %>
+      <% end %>
+  </body>
+</html>
